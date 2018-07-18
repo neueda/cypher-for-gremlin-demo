@@ -4,6 +4,7 @@ import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.opencypher.gremlin.Util.format;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class QueriesTest {
-    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
+    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.neptune();
 
     private static final Logger logger = LoggerFactory.getLogger(QueriesTest.class);
     private CypherGremlinClient cypherGremlinClient;
@@ -49,7 +50,7 @@ public class QueriesTest {
             "MATCH (n)" +
                 "RETURN count(n) as count").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(19L, results.get(0).get("count"));
     }
@@ -63,7 +64,7 @@ public class QueriesTest {
             "MATCH ()-[r]->()" +
                 "RETURN count(r) as count").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(19L, results.get(0).get("count"));
     }
@@ -77,7 +78,7 @@ public class QueriesTest {
             "MATCH ()-[r]-() " +
                 "RETURN DISTINCT type(r)").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(3, results.size());
     }
@@ -91,7 +92,7 @@ public class QueriesTest {
             "MATCH (n) " +
                 "RETURN DISTINCT labels(n) AS label, keys(n) AS properties").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(3, results.size());
     }
@@ -105,7 +106,7 @@ public class QueriesTest {
             "MATCH (n:Star) " +
                 "RETURN n.name").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(6, results.size());
     }
@@ -119,7 +120,7 @@ public class QueriesTest {
             "MATCH (n)-[r]-() " +
                 "RETURN *").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(38, results.size());
     }
@@ -133,7 +134,7 @@ public class QueriesTest {
             "MATCH (n:StarSystem {name: 'Alpha Centauri'})<-[r]-(m) " +
                 "RETURN n, r, m").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(3, results.size());
     }
@@ -147,7 +148,7 @@ public class QueriesTest {
             "MATCH p = (:Star)-->() " +
                 "RETURN p").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(6, results.size());
     }
@@ -161,7 +162,7 @@ public class QueriesTest {
             "MATCH ()-[r]-() " +
                 "RETURN DISTINCT type(r)").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(3, results.size());
     }
@@ -190,7 +191,7 @@ public class QueriesTest {
                 "  WHERE 2.3 < orbit.au < 3.3 " +
                 "RETURN p.name AS planet").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals("Ceres", results.get(0).get("planet"));
     }
@@ -204,7 +205,7 @@ public class QueriesTest {
             "MATCH (s:Star) " +
                 "RETURN s.type, count(s)").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(5, results.size());
     }
@@ -218,7 +219,7 @@ public class QueriesTest {
             "MATCH (s)-[:MEMBER_OF]->(ss) " +
                 "RETURN ss.name AS system, collect(s.name) AS stars").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(3, results.size());
     }
@@ -232,7 +233,7 @@ public class QueriesTest {
             "MATCH (p:Planet)-[*2]->(ss:StarSystem) " +
                 "RETURN ss.name AS system, count(p) AS planets").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(2, results.size());
     }
@@ -249,7 +250,7 @@ public class QueriesTest {
                 "ORDER BY r.au DESC " +
                 "LIMIT 5").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(5, results.size());
     }
@@ -265,7 +266,7 @@ public class QueriesTest {
                 "WHERE orbit.au < 2 AND neighbour <> earth " +
                 "RETURN neighbour.name").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(3, results.size());
     }
@@ -281,7 +282,7 @@ public class QueriesTest {
                 "CREATE (m:Moon {name: moon})-[o:ORBITS]->(p) " +
                 "RETURN m, o, p").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(2, results.size());
     }
@@ -299,7 +300,7 @@ public class QueriesTest {
                 "RETURN s.name " +
                 "ORDER BY s.name").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(4, results.size());
     }
@@ -313,7 +314,7 @@ public class QueriesTest {
             "MATCH (s:Star {type: 'M'}) " +
                 "RETURN [(s)<-[:ORBITS]-(p) WHERE p:Planet | p.name] AS planets").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(asList("Proxima Centauri b"), results.get(0).get("planets"));
     }
@@ -329,7 +330,7 @@ public class QueriesTest {
                 "ON MATCH SET cygnusX1.state = 'stable' " +
                 "RETURN cygnusX1; ").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(1, results.size());
     }
@@ -347,7 +348,7 @@ public class QueriesTest {
                 "ORDER BY planet " +
                 "RETURN system, collect(planet) AS planets").all();
 
-        logger.info("Results: {}", results);
+        logger.info(format(results));
 
         assertEquals(3, results.size());
     }

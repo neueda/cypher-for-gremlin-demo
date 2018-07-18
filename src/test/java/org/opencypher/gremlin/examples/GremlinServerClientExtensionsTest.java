@@ -10,10 +10,13 @@ import org.junit.Test;
 import org.opencypher.gremlin.client.CypherGremlinClient;
 import org.opencypher.gremlin.client.CypherResultSet;
 import org.opencypher.gremlin.translation.translator.Translator;
+import org.opencypher.gremlin.translation.translator.TranslatorFlavor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GremlinServerClientExtensionsTest {
+    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
+
     private static final Logger logger = LoggerFactory.getLogger(GremlinServerClientExtensionsTest.class);
 
     /**
@@ -30,7 +33,7 @@ public class GremlinServerClientExtensionsTest {
             CypherGremlinClient.translating(gremlinClient, () -> Translator.builder()
                 .gremlinGroovy()
                 .enableCypherExtensions()
-                .build());
+                .build(FLAVOR));
 
         String cypher = "RETURN 'test' + toString(1) as result";
         CypherResultSet resultSet = cypherGremlinClient.submit(cypher);
