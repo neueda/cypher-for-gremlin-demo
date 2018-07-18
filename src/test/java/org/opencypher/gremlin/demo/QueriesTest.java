@@ -272,6 +272,18 @@ public class QueriesTest {
     }
 
     /**
+     * Delete Proxima Centauri
+     */
+    @Test
+    public void deleteProximaCentauri() {
+        List<Map<String, Object>> results = cypherGremlinClient.submit(
+            "MATCH (p:Star {name: 'Proxima Centauri'}) " +
+                "DETACH DELETE p").all();
+
+        assertEquals(0, results.size());
+    }
+
+    /**
      * Create the two moons of Mars
      */
     @Test
@@ -320,19 +332,23 @@ public class QueriesTest {
     }
 
     /**
-     * Creating a black hole at given coordinates
+     * Creating and updating a black hole at given coordinates
      */
     @Test
-    public void creatingABlackHoleAtGivenCoordinates() {
-        List<Map<String, Object>> results = cypherGremlinClient.submit(
-            "MERGE (cygnusX1:BlackHole {name: 'Cygnus X-1', ra: '19h 58m', dec: '+35°'}) " +
-                "ON CREATE SET cygnusX1.state = 'forming' " +
-                "ON MATCH SET cygnusX1.state = 'stable' " +
-                "RETURN cygnusX1; ").all();
+    public void updatingABlackHoleAtGivenCoordinates() {
+        String merge = "MERGE (cygnusX1:BlackHole {name: 'Cygnus X-1', ra: '19h 58m', dec: '+35°'}) " +
+            "ON CREATE SET cygnusX1.state = 'forming' " +
+            "ON MATCH SET cygnusX1.state = 'stable' " +
+            "RETURN cygnusX1.state as state; ";
 
-        logger.info(format(results));
+        List<Map<String, Object>> results1 = cypherGremlinClient.submit(merge).all();
+        List<Map<String, Object>> results2 = cypherGremlinClient.submit(merge).all();
 
-        assertEquals(1, results.size());
+        logger.info(format(results1));
+        logger.info(format(results2));
+
+        assertEquals("forming", results1.get(0).get("state"));
+        assertEquals("stable", results2.get(0).get("state"));
     }
 
     /**
