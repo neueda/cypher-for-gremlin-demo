@@ -9,10 +9,13 @@ import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 import org.opencypher.gremlin.neo4j.driver.Config;
 import org.opencypher.gremlin.neo4j.driver.GremlinDatabase;
+import org.opencypher.gremlin.translation.translator.TranslatorFlavor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Neo4jDriverTest {
+    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.neptune();
+
     private static final Logger logger = LoggerFactory.getLogger(Neo4jDriverTest.class);
 
     @Test
@@ -21,7 +24,7 @@ public class Neo4jDriverTest {
         Cluster cluster = Cluster.open(gremlinConfig);
 
         Config config = Config.build()
-                .withTranslation()
+                .withTranslation(FLAVOR)
                 .toConfig();
         Driver driver = GremlinDatabase.driver(cluster, config);
 

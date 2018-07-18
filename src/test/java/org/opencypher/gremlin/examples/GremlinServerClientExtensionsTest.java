@@ -9,15 +9,17 @@ import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.junit.Test;
 import org.opencypher.gremlin.client.CypherGremlinClient;
 import org.opencypher.gremlin.client.CypherResultSet;
-import org.opencypher.gremlin.translation.translator.TranslatorFlavor;
+import org.opencypher.gremlin.translation.translator.Translator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GremlinServerClientTest {
-    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
+public class GremlinServerClientExtensionsTest {
+    private static final Logger logger = LoggerFactory.getLogger(GremlinServerClientExtensionsTest.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(GremlinServerClientTest.class);
-
+    /**
+     * Note that <a href="https://github.com/opencypher/cypher-for-gremlin/tree/master/tinkerpop/cypher-gremlin-extensions">Gremlin Cypher Extensions</a>
+     * should be added to Gremlin Server classpath remote to work.
+     */
     @Test
     public void gremlinServerClient() throws Exception {
         String config = getFile("remote.yaml");
@@ -25,12 +27,15 @@ public class GremlinServerClientTest {
         Cluster cluster = Cluster.open(config);
         Client gremlinClient = cluster.connect();
         CypherGremlinClient cypherGremlinClient =
-                CypherGremlinClient.translating(gremlinClient, FLAVOR);
+                CypherGremlinClient.translating(gremlinClient, () -> Translator.builder()
+                        .gremlinGroovy()
+                        .enableCypherExtensions()
+                        .build());
 
-        String cypher = "MATCH (n) RETURN count(n) as count";
+        String cypher = "RETURN 'test' + toString(1) as result";
         CypherResultSet resultSet = cypherGremlinClient.submit(cypher);
         List<Map<String, Object>> results = resultSet.all();
 
-        logger.info("Count: {}", results);
+        logger.info("Result: {}", results);
     }
 }

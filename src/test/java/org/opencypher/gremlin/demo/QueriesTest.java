@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class QueriesTest {
+    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
+
     private static final Logger logger = LoggerFactory.getLogger(QueriesTest.class);
     private CypherGremlinClient cypherGremlinClient;
 
@@ -29,7 +31,7 @@ public class QueriesTest {
         Client gremlinClient = cluster.connect();
         cypherGremlinClient = CypherGremlinClient.translating(
                 gremlinClient,
-                TranslatorFlavor.neptune());
+                FLAVOR);
 
         String createSnMini = new String(readAllBytes(get(Util.getFile("galaxy.cyp"))));
 
