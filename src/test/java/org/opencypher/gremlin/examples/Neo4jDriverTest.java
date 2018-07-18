@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Neo4jDriverTest {
-    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.neptune();
+    private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
 
     private static final Logger logger = LoggerFactory.getLogger(Neo4jDriverTest.class);
 
