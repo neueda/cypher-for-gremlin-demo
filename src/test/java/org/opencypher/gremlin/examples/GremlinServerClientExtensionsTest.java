@@ -27,10 +27,10 @@ public class GremlinServerClientExtensionsTest {
         Cluster cluster = Cluster.open(config);
         Client gremlinClient = cluster.connect();
         CypherGremlinClient cypherGremlinClient =
-                CypherGremlinClient.translating(gremlinClient, () -> Translator.builder()
-                        .gremlinGroovy()
-                        .enableCypherExtensions()
-                        .build());
+            CypherGremlinClient.translating(gremlinClient, () -> Translator.builder()
+                .gremlinGroovy()
+                .enableCypherExtensions()
+                .build());
 
         String cypher = "RETURN 'test' + toString(1) as result";
         CypherResultSet resultSet = cypherGremlinClient.submit(cypher);

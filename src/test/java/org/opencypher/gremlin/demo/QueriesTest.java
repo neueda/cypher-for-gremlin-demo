@@ -30,8 +30,8 @@ public class QueriesTest {
         Cluster cluster = Cluster.open(config);
         Client gremlinClient = cluster.connect();
         cypherGremlinClient = CypherGremlinClient.translating(
-                gremlinClient,
-                FLAVOR);
+            gremlinClient,
+            FLAVOR);
 
         String createSnMini = new String(readAllBytes(get(Util.getFile("galaxy.cyp"))));
 
@@ -46,8 +46,8 @@ public class QueriesTest {
     @Test
     public void countAllNodes() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (n)" +
-                        "RETURN count(n) as count").all();
+            "MATCH (n)" +
+                "RETURN count(n) as count").all();
 
         logger.info("Results: {}", results);
 
@@ -60,8 +60,8 @@ public class QueriesTest {
     @Test
     public void countAllRelationships() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH ()-[r]->()" +
-                        "RETURN count(r) as count").all();
+            "MATCH ()-[r]->()" +
+                "RETURN count(r) as count").all();
 
         logger.info("Results: {}", results);
 
@@ -74,8 +74,8 @@ public class QueriesTest {
     @Test
     public void showRelationshipTypes() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH ()-[r]-() " +
-                        "RETURN DISTINCT type(r)").all();
+            "MATCH ()-[r]-() " +
+                "RETURN DISTINCT type(r)").all();
 
         logger.info("Results: {}", results);
 
@@ -88,8 +88,8 @@ public class QueriesTest {
     @Test
     public void showNodeLabelsAndPropertyNames() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (n) " +
-                        "RETURN DISTINCT labels(n) AS label, keys(n) AS properties").all();
+            "MATCH (n) " +
+                "RETURN DISTINCT labels(n) AS label, keys(n) AS properties").all();
 
         logger.info("Results: {}", results);
 
@@ -102,8 +102,8 @@ public class QueriesTest {
     @Test
     public void findNamesOfStars() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (n:Star) " +
-                        "RETURN n.name").all();
+            "MATCH (n:Star) " +
+                "RETURN n.name").all();
 
         logger.info("Results: {}", results);
 
@@ -116,8 +116,8 @@ public class QueriesTest {
     @Test
     public void returnAllNodesWithRelationships() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (n)-[r]-() " +
-                        "RETURN *").all();
+            "MATCH (n)-[r]-() " +
+                "RETURN *").all();
 
         logger.info("Results: {}", results);
 
@@ -130,8 +130,8 @@ public class QueriesTest {
     @Test
     public void returnAlphaCentauriWithAllItsStars() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (n:StarSystem {name: 'Alpha Centauri'})<-[r]-(m) " +
-                        "RETURN n, r, m").all();
+            "MATCH (n:StarSystem {name: 'Alpha Centauri'})<-[r]-(m) " +
+                "RETURN n, r, m").all();
 
         logger.info("Results: {}", results);
 
@@ -144,8 +144,8 @@ public class QueriesTest {
     @Test
     public void returnPathsOfStarRelationships() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH p = (:Star)-->() " +
-                        "RETURN p").all();
+            "MATCH p = (:Star)-->() " +
+                "RETURN p").all();
 
         logger.info("Results: {}", results);
 
@@ -158,8 +158,8 @@ public class QueriesTest {
     @Test
     public void listAllRelationshipTypesInTheGraph() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH ()-[r]-() " +
-                        "RETURN DISTINCT type(r)").all();
+            "MATCH ()-[r]-() " +
+                "RETURN DISTINCT type(r)").all();
 
         logger.info("Results: {}", results);
 
@@ -172,10 +172,10 @@ public class QueriesTest {
     @Test
     public void findStarSystemsWithin5LightYearsFromOurs() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (ss1:StarSystem {name: 'Solar System'}) " +
-                        "MATCH (ss1)-[r:DISTANCE_TO]-(ss2:StarSystem) " +
-                        "WHERE r.ly <= 5 " +
-                        "RETURN ss2.name as name").all();
+            "MATCH (ss1:StarSystem {name: 'Solar System'}) " +
+                "MATCH (ss1)-[r:DISTANCE_TO]-(ss2:StarSystem) " +
+                "WHERE r.ly <= 5 " +
+                "RETURN ss2.name as name").all();
 
         assertEquals("Alpha Centauri", results.get(0).get("name"));
     }
@@ -186,9 +186,9 @@ public class QueriesTest {
     @Test
     public void findAllPlanetsInTheAsteroidBelt() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (p:Planet)-[orbit:ORBITS]->(:Star {name: 'Sun'}) " +
-                        "  WHERE 2.3 < orbit.au < 3.3 " +
-                        "RETURN p.name AS planet").all();
+            "MATCH (p:Planet)-[orbit:ORBITS]->(:Star {name: 'Sun'}) " +
+                "  WHERE 2.3 < orbit.au < 3.3 " +
+                "RETURN p.name AS planet").all();
 
         logger.info("Results: {}", results);
 
@@ -201,8 +201,8 @@ public class QueriesTest {
     @Test
     public void countStarsByTheirSpectralType() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (s:Star) " +
-                        "RETURN s.type, count(s)").all();
+            "MATCH (s:Star) " +
+                "RETURN s.type, count(s)").all();
 
         logger.info("Results: {}", results);
 
@@ -215,8 +215,8 @@ public class QueriesTest {
     @Test
     public void groupStarsByStarSystem() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (s)-[:MEMBER_OF]->(ss) " +
-                        "RETURN ss.name AS system, collect(s.name) AS stars").all();
+            "MATCH (s)-[:MEMBER_OF]->(ss) " +
+                "RETURN ss.name AS system, collect(s.name) AS stars").all();
 
         logger.info("Results: {}", results);
 
@@ -229,8 +229,8 @@ public class QueriesTest {
     @Test
     public void countPlanetsByStarSystem() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (p:Planet)-[*2]->(ss:StarSystem) " +
-                        "RETURN ss.name AS system, count(p) AS planets").all();
+            "MATCH (p:Planet)-[*2]->(ss:StarSystem) " +
+                "RETURN ss.name AS system, count(p) AS planets").all();
 
         logger.info("Results: {}", results);
 
@@ -244,10 +244,10 @@ public class QueriesTest {
     @Test
     public void findFiveFarthestPlanetsInTheSolarSystem() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (p:Planet)-[r:ORBITS]->(s:Star {name: 'Sun'}) " +
-                        "RETURN p.name " +
-                        "ORDER BY r.au DESC " +
-                        "LIMIT 5").all();
+            "MATCH (p:Planet)-[r:ORBITS]->(s:Star {name: 'Sun'}) " +
+                "RETURN p.name " +
+                "ORDER BY r.au DESC " +
+                "LIMIT 5").all();
 
         logger.info("Results: {}", results);
 
@@ -260,10 +260,10 @@ public class QueriesTest {
     @Test
     public void findAllPlanetsWithin2AUOfEarthsStar() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (earth:Planet {name: 'Earth'}) " +
-                        "MATCH (earth)-->(:Star)<-[orbit:ORBITS]-(neighbour:Planet) " +
-                        "WHERE orbit.au < 2 AND neighbour <> earth " +
-                        "RETURN neighbour.name").all();
+            "MATCH (earth:Planet {name: 'Earth'}) " +
+                "MATCH (earth)-->(:Star)<-[orbit:ORBITS]-(neighbour:Planet) " +
+                "WHERE orbit.au < 2 AND neighbour <> earth " +
+                "RETURN neighbour.name").all();
 
         logger.info("Results: {}", results);
 
@@ -276,10 +276,10 @@ public class QueriesTest {
     @Test
     public void createTheTwoMoonsOfMars() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "UNWIND ['Phobos', 'Deimos'] AS moon " +
-                        "MATCH (p:Planet {name: 'Mars'}) " +
-                        "CREATE (m:Moon {name: moon})-[o:ORBITS]->(p) " +
-                        "RETURN m, o, p").all();
+            "UNWIND ['Phobos', 'Deimos'] AS moon " +
+                "MATCH (p:Planet {name: 'Mars'}) " +
+                "CREATE (m:Moon {name: moon})-[o:ORBITS]->(p) " +
+                "RETURN m, o, p").all();
 
         logger.info("Results: {}", results);
 
@@ -292,12 +292,12 @@ public class QueriesTest {
     @Test
     public void findAllStarsWithoutAnyPlanetsOrbitingThem() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (s:Star) " +
-                        "OPTIONAL MATCH (s)<-[:ORBITS]-(p:Planet) " +
-                        "WITH s, p " +
-                        "WHERE p IS NULL " +
-                        "RETURN s.name " +
-                        "ORDER BY s.name").all();
+            "MATCH (s:Star) " +
+                "OPTIONAL MATCH (s)<-[:ORBITS]-(p:Planet) " +
+                "WITH s, p " +
+                "WHERE p IS NULL " +
+                "RETURN s.name " +
+                "ORDER BY s.name").all();
 
         logger.info("Results: {}", results);
 
@@ -310,8 +310,8 @@ public class QueriesTest {
     @Test
     public void listNamesOfPlanetsThatOrbitMTypeStars() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (s:Star {type: 'M'}) " +
-                        "RETURN [(s)<-[:ORBITS]-(p) WHERE p:Planet | p.name] AS planets").all();
+            "MATCH (s:Star {type: 'M'}) " +
+                "RETURN [(s)<-[:ORBITS]-(p) WHERE p:Planet | p.name] AS planets").all();
 
         logger.info("Results: {}", results);
 
@@ -324,10 +324,10 @@ public class QueriesTest {
     @Test
     public void creatingABlackHoleAtGivenCoordinates() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MERGE (cygnusX1:BlackHole {name: 'Cygnus X-1', ra: '19h 58m', dec: '+35°'}) " +
-                        "ON CREATE SET cygnusX1.state = 'forming' " +
-                        "ON MATCH SET cygnusX1.state = 'stable' " +
-                        "RETURN cygnusX1; ").all();
+            "MERGE (cygnusX1:BlackHole {name: 'Cygnus X-1', ra: '19h 58m', dec: '+35°'}) " +
+                "ON CREATE SET cygnusX1.state = 'forming' " +
+                "ON MATCH SET cygnusX1.state = 'stable' " +
+                "RETURN cygnusX1; ").all();
 
         logger.info("Results: {}", results);
 
@@ -340,12 +340,12 @@ public class QueriesTest {
     @Test
     public void advancedQueryExample() {
         List<Map<String, Object>> results = cypherGremlinClient.submit(
-                "MATCH (sun:Star {name: 'Sirius A'})-[*1..2]-(sys:StarSystem) " +
-                        "OPTIONAL MATCH (p:Planet)-[:ORBITS]->(s:Star)-[:MEMBER_OF]->(sys) " +
-                        "WHERE s.type IN ['K', 'G', 'B', 'F', 'O', 'A', 'M'] " +
-                        "WITH sys.name AS system, p.name AS planet " +
-                        "ORDER BY planet " +
-                        "RETURN system, collect(planet) AS planets").all();
+            "MATCH (sun:Star {name: 'Sirius A'})-[*1..2]-(sys:StarSystem) " +
+                "OPTIONAL MATCH (p:Planet)-[:ORBITS]->(s:Star)-[:MEMBER_OF]->(sys) " +
+                "WHERE s.type IN ['K', 'G', 'B', 'F', 'O', 'A', 'M'] " +
+                "WITH sys.name AS system, p.name AS planet " +
+                "ORDER BY planet " +
+                "RETURN system, collect(planet) AS planets").all();
 
         logger.info("Results: {}", results);
 

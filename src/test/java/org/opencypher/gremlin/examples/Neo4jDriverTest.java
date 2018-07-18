@@ -24,8 +24,8 @@ public class Neo4jDriverTest {
         Cluster cluster = Cluster.open(gremlinConfig);
 
         Config config = Config.build()
-                .withTranslation(FLAVOR)
-                .toConfig();
+            .withTranslation(FLAVOR)
+            .toConfig();
         Driver driver = GremlinDatabase.driver(cluster, config);
 
         String cypher = "MATCH (n) RETURN count(n) as count";

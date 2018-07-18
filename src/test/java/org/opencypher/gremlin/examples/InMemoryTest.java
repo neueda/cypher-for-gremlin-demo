@@ -22,7 +22,7 @@ public class InMemoryTest {
 
         // Gremlin Server client
         CypherGremlinClient cypherGremlinClient =
-                CypherGremlinClient.inMemory(traversal);
+            CypherGremlinClient.inMemory(traversal);
 
         cypherGremlinClient.submit("CREATE (n:Test {name: 'demo'})").all();
 

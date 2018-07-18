@@ -25,7 +25,7 @@ public class GremlinServerClientTest {
         Cluster cluster = Cluster.open(config);
         Client gremlinClient = cluster.connect();
         CypherGremlinClient cypherGremlinClient =
-                CypherGremlinClient.translating(gremlinClient, FLAVOR);
+            CypherGremlinClient.translating(gremlinClient, FLAVOR);
 
         String cypher = "MATCH (n) RETURN count(n) as count";
         CypherResultSet resultSet = cypherGremlinClient.submit(cypher);

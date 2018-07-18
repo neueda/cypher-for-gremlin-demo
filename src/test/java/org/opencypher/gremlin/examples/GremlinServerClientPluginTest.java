@@ -28,7 +28,7 @@ public class GremlinServerClientPluginTest {
         Cluster cluster = Cluster.open(config);
         Client gremlinClient = cluster.connect();
         CypherGremlinClient cypherGremlinClient =
-                CypherGremlinClient.plugin(gremlinClient);
+            CypherGremlinClient.plugin(gremlinClient);
 
         String cypher = "RETURN 'test' + toString(1) as result";
         CypherResultSet resultSet = cypherGremlinClient.submit(cypher);
