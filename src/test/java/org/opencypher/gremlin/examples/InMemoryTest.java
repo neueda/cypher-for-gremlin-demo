@@ -12,6 +12,10 @@ import org.opencypher.gremlin.neo4j.driver.GremlinDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This test shows how to configure a Cypher Gremlin Server client
+ * that does client-side translation and runs queries on a {@link GraphTraversalSource}.
+ */
 public class InMemoryTest {
     private static final Logger logger = LoggerFactory.getLogger(InMemoryTest.class);
 

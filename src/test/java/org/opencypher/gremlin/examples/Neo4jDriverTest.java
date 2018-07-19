@@ -13,6 +13,10 @@ import org.opencypher.gremlin.translation.translator.TranslatorFlavor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This test shows how use the Neo4j Java API to query a remote Gremlin Server.
+ * The translation is done on the client-side with a specific flavor.
+ */
 public class Neo4jDriverTest {
     private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
 

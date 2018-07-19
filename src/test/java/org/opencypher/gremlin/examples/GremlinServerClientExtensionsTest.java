@@ -14,6 +14,10 @@ import org.opencypher.gremlin.translation.translator.TranslatorFlavor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This test shows how to configure a Cypher Gremlin Server client
+ * that allows Cypher extensions in translation.
+ */
 public class GremlinServerClientExtensionsTest {
     private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
 
@@ -21,7 +25,7 @@ public class GremlinServerClientExtensionsTest {
 
     /**
      * Note that <a href="https://github.com/opencypher/cypher-for-gremlin/tree/master/tinkerpop/cypher-gremlin-extensions">Gremlin Cypher Extensions</a>
-     * should be added to Gremlin Server classpath remote to work.
+     * should be added to the target Gremlin Server classpath in order for this to work.
      */
     @Test
     public void gremlinServerClient() throws Exception {

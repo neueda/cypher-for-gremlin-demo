@@ -3,20 +3,20 @@ package org.opencypher.gremlin.examples;
 import static org.opencypher.gremlin.Util.getFile;
 
 import java.util.List;
-import java.util.Map;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
+import org.apache.tinkerpop.gremlin.driver.Result;
+import org.apache.tinkerpop.gremlin.driver.Tokens;
+import org.apache.tinkerpop.gremlin.driver.message.RequestMessage;
 import org.junit.Test;
-import org.opencypher.gremlin.client.CypherGremlinClient;
-import org.opencypher.gremlin.client.CypherResultSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This test shows how to configure a Cypher Gremlin Server client
- * that sends Cypher queries directly to a Cypher-enabled Gremlin Server.
+ * This test shows how to use the official Gremlin-Java driver
+ * to send Cypher queries to a Cypher-enabled Gremlin Server.
  */
-public class GremlinServerClientPluginTest {
+public class GremlinDriverPluginTest {
     private static final Logger logger = LoggerFactory.getLogger(GremlinServerClientPluginTest.class);
 
     /**
@@ -31,12 +31,15 @@ public class GremlinServerClientPluginTest {
 
         Cluster cluster = Cluster.open(config);
         Client gremlinClient = cluster.connect();
-        CypherGremlinClient cypherGremlinClient =
-            CypherGremlinClient.plugin(gremlinClient);
 
-        String cypher = "RETURN 'test' + toString(1) as result";
-        CypherResultSet resultSet = cypherGremlinClient.submit(cypher);
-        List<Map<String, Object>> results = resultSet.all();
+        String cypher = "CREATE (n:L {prop: 1}) RETURN n";
+
+        RequestMessage requestMessage = RequestMessage.build(Tokens.OPS_EVAL)
+                .processor("cypher")
+                .add(Tokens.ARGS_GREMLIN, cypher)
+                .create();
+
+        List<Result> results = gremlinClient.submitAsync(requestMessage).get().all().get();
 
         logger.info("Result: {}", results);
     }

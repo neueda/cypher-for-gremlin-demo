@@ -13,6 +13,10 @@ import org.opencypher.gremlin.translation.translator.TranslatorFlavor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This test shows how to configure a Cypher Gremlin Server client
+ * that does client-side translation with a specific flavor.
+ */
 public class GremlinServerClientTest {
     private static final TranslatorFlavor FLAVOR = TranslatorFlavor.gremlinServer();
 
