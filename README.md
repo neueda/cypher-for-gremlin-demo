@@ -14,4 +14,7 @@ Demo of [Cypher for Gremlin](https://github.com/opencypher/cypher-for-gremlin) c
 1. Change the `FLAVOR` constant if your target is something other than the TinkerPop Gremlin Server (e.g. Amazon Neptune or Azure Cosmos DB)
 1. Run any of the tests that interest you.
 1. Translated queries and results will show up in logs
-1. For documentation refer to the [Cypher for Gremlin](https://github.com/opencypher/cypher-for-gremlin) README
+
+## More
+
+For documentation refer to the [Cypher for Gremlin](https://github.com/opencypher/cypher-for-gremlin) README. You can also start experimenting with Cypher for Gremlin without working with the API directly, by installing the [Gremlin Console Cypher plugin](tinkerpop/cypher-gremlin-console-plugin).
